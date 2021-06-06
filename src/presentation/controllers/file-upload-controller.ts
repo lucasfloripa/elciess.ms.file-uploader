@@ -1,5 +1,5 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden, serverError } from '@/presentation/helpers'
+import { badRequest, forbidden, ok, serverError } from '@/presentation/helpers'
 import { UploadFile } from '@/domain/usecases'
 import { AccessDeniedError } from '@/presentation/errors'
 
@@ -19,7 +19,7 @@ export class FileUploadController implements Controller {
       if (!isValid) {
         return forbidden(new AccessDeniedError())
       }
-      return null
+      return ok({ message: 'File Uploaded!' })
     } catch (error) {
       return serverError(error)
     }
