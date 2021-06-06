@@ -1,9 +1,11 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { badRequest } from '@/presentation/helpers'
+import { UploadFile } from '@/domain/usecases'
 
 export class FileUploadController implements Controller {
   constructor (
-    private readonly validation: Validation
+    private readonly validation: Validation,
+    private readonly uploadFile: UploadFile
   ) { }
 
   async handle (request: FileUploadController.Request): Promise<HttpResponse> {
@@ -11,6 +13,8 @@ export class FileUploadController implements Controller {
     if (error) {
       return badRequest(error)
     }
+    await this.uploadFile.upload(request)
+
     return null
   }
 }
