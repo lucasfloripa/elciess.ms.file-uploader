@@ -1,5 +1,5 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden } from '@/presentation/helpers'
+import { badRequest, forbidden, serverError } from '@/presentation/helpers'
 import { UploadFile } from '@/domain/usecases'
 import { AccessDeniedError } from '@/presentation/errors'
 
@@ -10,15 +10,19 @@ export class FileUploadController implements Controller {
   ) { }
 
   async handle (request: FileUploadController.Request): Promise<HttpResponse> {
-    const error = this.validation.validate(request)
-    if (error) {
-      return badRequest(error)
+    try {
+      const error = this.validation.validate(request)
+      if (error) {
+        return badRequest(error)
+      }
+      const isValid = await this.uploadFile.upload(request)
+      if (!isValid) {
+        return forbidden(new AccessDeniedError())
+      }
+      return null
+    } catch (error) {
+      return serverError(error)
     }
-    const isValid = await this.uploadFile.upload(request)
-    if (!isValid) {
-      return forbidden(new AccessDeniedError())
-    }
-    return null
   }
 }
 
