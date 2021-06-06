@@ -3,16 +3,7 @@ import { FileUploadController } from '@/presentation/controllers/file-upload-con
 import { badRequest, forbidden, ok, serverError } from '@/presentation/helpers'
 import { AccessDeniedError } from '@/presentation/errors'
 import { Validation } from '@/presentation/protocols'
-import { mockValidationStub } from '@/tests/presentation/mocks'
-
-const mockUploadFileStub = (): UploadFile => {
-  class UploadFileStub implements UploadFile {
-    async upload (uploadFileParams: UploadFile.Params): Promise<boolean> {
-      return Promise.resolve(true)
-    }
-  }
-  return new UploadFileStub()
-}
+import { mockUploadFileStub, mockValidationStub } from '@/tests/presentation/mocks'
 
 const mockRequest = (): FileUploadController.Request => ({
   fieldname: 'fieldname',
