@@ -34,7 +34,7 @@ const makeSut = (): SutTypes => {
 }
 
 describe('CloudFileUpload Data Usecase', () => {
-  test('Should call uploadFileCloud with correct values', async () => {
+  test('Should call uploadFileStorage with correct values', async () => {
     const { sut, uploadFileStorageStub } = makeSut()
     const uploadFileSpy = jest.spyOn(uploadFileStorageStub, 'uploadFile')
     const request = mockRequest()
@@ -42,10 +42,17 @@ describe('CloudFileUpload Data Usecase', () => {
     expect(uploadFileSpy).toHaveBeenCalledWith(request)
   })
 
-  test('Should return null if uploadFileCloud returns null', async () => {
+  test('Should return null if uploadFileStorage returns null', async () => {
     const { sut, uploadFileStorageStub } = makeSut()
     jest.spyOn(uploadFileStorageStub, 'uploadFile').mockReturnValueOnce(Promise.resolve(null))
     const isValid = await sut.upload(mockRequest())
     expect(isValid).toBeNull()
+  })
+
+  test('Should throw if uploadFileStorage throws', async () => {
+    const { sut, uploadFileStorageStub } = makeSut()
+    jest.spyOn(uploadFileStorageStub, 'uploadFile').mockImplementationOnce(async () => await Promise.reject(new Error()))
+    const promise = sut.upload(mockRequest())
+    await expect(promise).rejects.toThrow()
   })
 })
