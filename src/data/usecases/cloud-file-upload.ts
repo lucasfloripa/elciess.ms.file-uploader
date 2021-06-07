@@ -7,7 +7,7 @@ export class CloudFileUpload implements UploadFile {
   ) {}
 
   async upload (uploadFileParams: UploadFile.Params): Promise<boolean> {
-    await this.uploadFileStorage.uploadFile(uploadFileParams)
-    return null
+    const isValid = await this.uploadFileStorage.uploadFile(uploadFileParams)
+    return isValid
   }
 }
