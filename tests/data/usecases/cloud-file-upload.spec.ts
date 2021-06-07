@@ -41,4 +41,11 @@ describe('CloudFileUpload Data Usecase', () => {
     await sut.upload(request)
     expect(uploadFileSpy).toHaveBeenCalledWith(request)
   })
+
+  test('Should return null if uploadFileCloud returns null', async () => {
+    const { sut, uploadFileStorageStub } = makeSut()
+    jest.spyOn(uploadFileStorageStub, 'uploadFile').mockReturnValueOnce(Promise.resolve(null))
+    const isValid = await sut.upload(mockRequest())
+    expect(isValid).toBeNull()
+  })
 })
