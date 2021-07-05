@@ -2,7 +2,7 @@ import { Controller } from '@/presentation/protocols'
 
 import { Request, Response } from 'express'
 
-export const adaptRoute = (controller: Controller) => {
+export const expressRouterAdapter = (controller: Controller) => {
   return async (req: Request, res: Response) => {
     const request = {
       ...(req.body || {}),
