@@ -1,8 +1,6 @@
 node_modules
 dist
 coverage
-data
-!src/data
-!tests/data
 .vscode
-config.env
+.env
+src/tmp/**
