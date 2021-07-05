@@ -1,13 +1,26 @@
 import multer from 'multer'
-import path from 'path'
+import crypto from 'crypto'
 
-export default {
+const tmpFilePath = `${__dirname}/../../tmp`
+
+const multerConfig = {
+  dest: tmpFilePath,
   storage: multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, path.resolve(__dirname, '..', '..', 'tmp', 'uploads'))
+      cb(null, tmpFilePath)
     },
     filename: (req, file, cb) => {
-      cb(null, file.originalname)
+      crypto.randomBytes(16, (err, hash) => {
+        if (err) cb(err, file.originalname)
+
+        file.originalname = `${hash.toString('hex')}-${file.originalname}`
+
+        cb(null, file.originalname)
+      })
     }
   })
 }
+
+const multerUpload = multer(multerConfig).single('file')
+
+export { multerUpload }
