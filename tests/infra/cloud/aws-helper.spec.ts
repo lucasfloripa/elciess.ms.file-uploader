@@ -10,7 +10,7 @@ jest.mock('aws-sdk', () => {
 })
 
 describe('61830632', () => {
-  it('should upload correctly', async () => {
-
+  test('', () => {
+    expect(true).toBeTruthy()
   })
 })

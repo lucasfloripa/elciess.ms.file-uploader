@@ -3,14 +3,9 @@ import { UploadFileStorage } from '@/data/protocols'
 import { UploadFile } from '@/domain/usecases'
 
 const mockRequest = (): UploadFile.Params => ({
-  fieldname: 'fieldname',
   originalname: 'originalname',
-  encoding: 'encoding',
   mimetype: 'mimetype',
-  destination: 'destination',
-  filename: 'filename',
-  path: 'path',
-  size: 1
+  path: 'path'
 })
 
 const mockUploadFileStorageStub = (): UploadFileStorage => {

@@ -6,14 +6,9 @@ import { Validation } from '@/presentation/protocols'
 import { mockUploadFileStub, mockValidationStub } from '@/tests/presentation/mocks'
 
 const mockRequest = (): FileUploadController.Request => ({
-  fieldname: 'fieldname',
   originalname: 'originalname',
-  encoding: 'encoding',
   mimetype: 'mimetype',
-  destination: 'destination',
-  filename: 'filename',
-  path: 'path',
-  size: 1
+  path: 'path'
 })
 
 type SutTypes = {
