@@ -10,11 +10,9 @@ const multerConfig = {
       cb(null, tmpFilePath)
     },
     filename: (req, file, cb) => {
-      crypto.randomBytes(16, (err, hash) => {
+      crypto.randomBytes(8, (err, hash) => {
         if (err) cb(err, file.originalname)
-
         file.originalname = `${hash.toString('hex')}-${file.originalname}`
-
         cb(null, file.originalname)
       })
     }

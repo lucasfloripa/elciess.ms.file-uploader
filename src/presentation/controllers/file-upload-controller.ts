@@ -28,13 +28,8 @@ export class FileUploadController implements Controller {
 
 export namespace FileUploadController {
   export type Request = {
-    fieldname: string
     originalname: string
-    encoding: string
     mimetype: string
-    destination: string
-    filename: string
     path: string
-    size: number
   }
 }

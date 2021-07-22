@@ -1,8 +1,16 @@
-import { AwsHelper } from '@/infra/cloud'
+// import { AwsHelper as sut } from '@/infra/cloud'
 
-describe('AwsHelper', () => {
-  test('Should return a S3 client', () => {
-    const clientS3 = AwsHelper.getClientS3()
-    expect(clientS3).not.toBeNull()
+const mS3Instance = {
+  upload: jest.fn().mockReturnThis(),
+  promise: jest.fn()
+}
+
+jest.mock('aws-sdk', () => {
+  return { S3: jest.fn(() => mS3Instance) }
+})
+
+describe('61830632', () => {
+  it('should upload correctly', async () => {
+
   })
 })
