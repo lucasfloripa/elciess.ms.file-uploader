@@ -1,6 +1,6 @@
 import { LoadFile } from '@/domain/usecases'
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, notFound } from '@/presentation/helpers'
+import { badRequest, notFound, serverError } from '@/presentation/helpers'
 
 export class FileLoadController implements Controller {
   constructor (
@@ -9,15 +9,19 @@ export class FileLoadController implements Controller {
   ) {}
 
   async handle (request: FileLoadController.Request): Promise<HttpResponse> {
-    const error = this.validation.validate(request)
-    if (error) {
-      return badRequest(error)
+    try {
+      const error = this.validation.validate(request)
+      if (error) {
+        return badRequest(error)
+      }
+      const file = await this.loadFile.load(request)
+      if (!file) {
+        return notFound()
+      }
+      return null
+    } catch (error) {
+      return serverError(error)
     }
-    const file = await this.loadFile.load(request)
-    if (!file) {
-      return notFound()
-    }
-    return null
   }
 }
 
