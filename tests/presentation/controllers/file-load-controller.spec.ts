@@ -2,7 +2,7 @@ import { LoadFile } from '@/domain/usecases'
 import { FileLoadController } from '@/presentation/controllers/file-load-controller'
 import { Validation } from '@/presentation/protocols'
 import { mockValidationStub } from '@/tests/presentation/mocks'
-import { badRequest, notFound } from '@/presentation/helpers'
+import { badRequest, notFound, serverError } from '@/presentation/helpers'
 
 const mockRequest = (): FileLoadController.Request => ({
   fileName: 'any_name',
@@ -58,5 +58,14 @@ describe('FileLoad Controller', () => {
     jest.spyOn(loadFileStub, 'load').mockReturnValueOnce(Promise.resolve(false))
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(notFound())
+  })
+
+  test('Should return 500 if loadFile throws', async () => {
+    const { sut, loadFileStub } = makeSut()
+    jest.spyOn(loadFileStub, 'load').mockImplementationOnce(async () => {
+      return await Promise.reject(new Error())
+    })
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
