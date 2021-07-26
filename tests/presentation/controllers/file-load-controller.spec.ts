@@ -2,7 +2,7 @@ import { LoadFile } from '@/domain/usecases'
 import { FileLoadController } from '@/presentation/controllers/file-load-controller'
 import { Validation } from '@/presentation/protocols'
 import { mockValidationStub } from '@/tests/presentation/mocks'
-import { badRequest, notFound, serverError } from '@/presentation/helpers'
+import { badRequest, notFound, ok, serverError } from '@/presentation/helpers'
 
 const mockRequest = (): FileLoadController.Request => ({
   fileName: 'any_name',
@@ -67,5 +67,12 @@ describe('FileLoad Controller', () => {
     })
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
+  test('Should return 200 on success', async () => {
+    const { sut } = makeSut()
+    const request = mockRequest()
+    const httpResponse = await sut.handle(request)
+    expect(httpResponse).toEqual(ok('any_file'))
   })
 })
