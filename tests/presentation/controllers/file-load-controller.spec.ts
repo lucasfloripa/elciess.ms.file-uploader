@@ -2,7 +2,7 @@ import { LoadFile } from '@/domain/usecases'
 import { FileLoadController } from '@/presentation/controllers/file-load-controller'
 import { Validation } from '@/presentation/protocols'
 import { mockValidationStub } from '@/tests/presentation/mocks'
-import { badRequest } from '@/presentation/helpers'
+import { badRequest, notFound } from '@/presentation/helpers'
 
 const mockRequest = (): FileLoadController.Request => ({
   fileName: 'any_name',
@@ -44,5 +44,19 @@ describe('FileLoad Controller', () => {
     jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new Error())
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(badRequest(new Error()))
+  })
+
+  test('Should call loadFile with correct values', async () => {
+    const { sut, loadFileStub } = makeSut()
+    const validateSpy = jest.spyOn(loadFileStub, 'load')
+    await sut.handle(mockRequest())
+    expect(validateSpy).toHaveBeenCalledWith(mockRequest())
+  })
+
+  test('Should return 404 if loadFile returns null', async () => {
+    const { sut, loadFileStub } = makeSut()
+    jest.spyOn(loadFileStub, 'load').mockReturnValueOnce(Promise.resolve(false))
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(notFound())
   })
 })
