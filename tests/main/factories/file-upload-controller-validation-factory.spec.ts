@@ -8,7 +8,7 @@ describe('FileUploadController Validation', () => {
   test('Should call Validation Composite with all Validators', () => {
     makeFileUploadValidation()
     const validations: Validation[] = []
-    for (const field of ['fieldname', 'originalname', 'encoding', 'mimetype', 'destination', 'filename', 'path', 'size']) {
+    for (const field of ['originalname', 'mimetype', 'path']) {
       validations.push(new RequiredFieldValidation(field))
     }
     expect(ValidationComposite).toHaveBeenCalledWith(validations)

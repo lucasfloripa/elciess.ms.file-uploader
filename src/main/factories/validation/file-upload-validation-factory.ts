@@ -3,7 +3,7 @@ import { RequiredFieldValidation, ValidationComposite } from '@/utils/validators
 
 export const makeFileUploadValidation = (): ValidationComposite => {
   const validations: Validation[] = []
-  for (const field of ['fieldname', 'originalname', 'encoding', 'mimetype', 'destination', 'filename', 'path', 'size']) {
+  for (const field of ['originalname', 'mimetype', 'path']) {
     validations.push(new RequiredFieldValidation(field))
   }
   return new ValidationComposite(validations)
