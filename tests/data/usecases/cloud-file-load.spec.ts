@@ -10,7 +10,7 @@ const makeRequest = (): LoadFile.Params => ({
 const mockLoadFileStorageStub = (): LoadFileStorage => {
   class LoadFileStorageStub implements LoadFileStorage {
     async loadFile (loadFileParams: LoadFile.Params): Promise<any> {
-      return Promise.resolve(true)
+      return Promise.resolve('any_file')
     }
   }
   return new LoadFileStorageStub()
@@ -47,5 +47,11 @@ describe('CloudFileLoad', () => {
     jest.spyOn(loadFileStorageStub, 'loadFile').mockImplementationOnce(async () => await Promise.reject(new Error()))
     const promise = sut.load(makeRequest())
     await expect(promise).rejects.toThrow()
+  })
+  test('Should return a file on success', async () => {
+    const { sut } = makeSut()
+    const request = makeRequest()
+    const file = await sut.load(request)
+    expect(file).toBe('any_file')
   })
 })
