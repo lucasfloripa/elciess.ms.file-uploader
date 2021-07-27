@@ -35,4 +35,11 @@ describe('CloudFileLoad', () => {
     await sut.load(request)
     expect(loadFileSpy).toHaveBeenCalledWith(request)
   })
+  test('Should return null if LoadFileStorage returns null', async () => {
+    const { sut, loadFileStorageStub } = makeSut()
+    jest.spyOn(loadFileStorageStub, 'loadFile').mockReturnValueOnce(Promise.resolve(null))
+    const request = makeRequest()
+    const file = await sut.load(request)
+    expect(file).toBeNull()
+  })
 })
