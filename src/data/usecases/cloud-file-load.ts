@@ -11,5 +11,6 @@ export class CloudFileLoad implements LoadFile {
     if (!file) {
       return null
     }
+    return file
   }
 }
