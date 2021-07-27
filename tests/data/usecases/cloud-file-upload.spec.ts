@@ -36,18 +36,22 @@ describe('CloudFileUpload Data Usecase', () => {
     await sut.upload(request)
     expect(uploadFileSpy).toHaveBeenCalledWith(request)
   })
-
   test('Should return null if uploadFileStorage returns null', async () => {
     const { sut, uploadFileStorageStub } = makeSut()
     jest.spyOn(uploadFileStorageStub, 'uploadFile').mockReturnValueOnce(Promise.resolve(null))
     const isValid = await sut.upload(mockRequest())
     expect(isValid).toBeNull()
   })
-
   test('Should throw if uploadFileStorage throws', async () => {
     const { sut, uploadFileStorageStub } = makeSut()
     jest.spyOn(uploadFileStorageStub, 'uploadFile').mockImplementationOnce(async () => await Promise.reject(new Error()))
     const promise = sut.upload(mockRequest())
     await expect(promise).rejects.toThrow()
+  })
+  test('Should return true on success', async () => {
+    const { sut } = makeSut()
+    const request = mockRequest()
+    const file = await sut.upload(request)
+    expect(file).toBe(true)
   })
 })
