@@ -7,6 +7,9 @@ export class CloudFileLoad implements LoadFile {
   ) {}
 
   async load (params: LoadFile.Params): Promise<any> {
-    await this.loadFileStorage.loadFile(params)
+    const file = await this.loadFileStorage.loadFile(params)
+    if (!file) {
+      return null
+    }
   }
 }
