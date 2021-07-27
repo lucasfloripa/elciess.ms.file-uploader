@@ -42,4 +42,10 @@ describe('CloudFileLoad', () => {
     const file = await sut.load(request)
     expect(file).toBeNull()
   })
+  test('Should throw if loadFileStorage throws', async () => {
+    const { sut, loadFileStorageStub } = makeSut()
+    jest.spyOn(loadFileStorageStub, 'loadFile').mockImplementationOnce(async () => await Promise.reject(new Error()))
+    const promise = sut.load(makeRequest())
+    await expect(promise).rejects.toThrow()
+  })
 })
