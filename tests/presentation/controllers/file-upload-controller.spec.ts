@@ -1,7 +1,6 @@
 import { UploadFile } from '@/domain/usecases'
 import { FileUploadController } from '@/presentation/controllers/file-upload-controller'
-import { badRequest, forbidden, ok, serverError } from '@/presentation/helpers'
-import { AccessDeniedError } from '@/presentation/errors'
+import { badRequest, notFound, ok, serverError } from '@/presentation/helpers'
 import { Validation } from '@/presentation/protocols'
 import { mockUploadFileStub, mockValidationStub } from '@/tests/presentation/mocks'
 
@@ -46,11 +45,11 @@ describe('FileUpload Controller', () => {
     expect(validateSpy).toHaveBeenCalledWith(mockRequest())
   })
 
-  test('Should return 403 if uploadFile returns false', async () => {
+  test('Should return 404 if uploadFile returns false', async () => {
     const { sut, uploadFileStub } = makeSut()
     jest.spyOn(uploadFileStub, 'upload').mockReturnValueOnce(Promise.resolve(false))
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(forbidden(new AccessDeniedError()))
+    expect(httpResponse).toEqual(notFound())
   })
 
   test('Should return 500 if uploadFile throws', async () => {

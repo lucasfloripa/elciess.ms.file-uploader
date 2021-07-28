@@ -1,7 +1,6 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden, ok, serverError } from '@/presentation/helpers'
+import { badRequest, notFound, ok, serverError } from '@/presentation/helpers'
 import { UploadFile } from '@/domain/usecases'
-import { AccessDeniedError } from '@/presentation/errors'
 
 export class FileUploadController implements Controller {
   constructor (
@@ -17,7 +16,7 @@ export class FileUploadController implements Controller {
       }
       const isValid = await this.uploadFile.upload(request)
       if (!isValid) {
-        return forbidden(new AccessDeniedError())
+        return notFound()
       }
       return ok({ message: 'File Uploaded!' })
     } catch (error) {
