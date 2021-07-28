@@ -3,6 +3,7 @@ import { UploadFileStorage } from '@/data/protocols'
 import { UploadFile } from '@/domain/usecases'
 
 const mockRequest = (): UploadFile.Params => ({
+  bucket: 'any_bucket',
   originalname: 'originalname',
   mimetype: 'mimetype',
   path: 'path'

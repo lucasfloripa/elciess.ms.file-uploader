@@ -27,6 +27,7 @@ export class FileUploadController implements Controller {
 
 export namespace FileUploadController {
   export type Request = {
+    bucket: string
     originalname: string
     mimetype: string
     path: string

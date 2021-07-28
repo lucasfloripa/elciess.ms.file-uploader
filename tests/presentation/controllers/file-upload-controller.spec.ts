@@ -5,6 +5,7 @@ import { Validation } from '@/presentation/protocols'
 import { mockUploadFileStub, mockValidationStub } from '@/tests/presentation/mocks'
 
 const mockRequest = (): FileUploadController.Request => ({
+  bucket: 'any_bucket',
   originalname: 'originalname',
   mimetype: 'mimetype',
   path: 'path'
@@ -30,28 +31,24 @@ describe('FileUpload Controller', () => {
     await sut.handle(mockRequest())
     expect(validateSpy).toHaveBeenCalledWith(mockRequest())
   })
-
   test('Should return 400 if validation returns an error', async () => {
     const { sut, validationStub } = makeSut()
     jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new Error())
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(badRequest(new Error()))
   })
-
   test('Should call uploadFile with correct values', async () => {
     const { sut, uploadFileStub } = makeSut()
     const validateSpy = jest.spyOn(uploadFileStub, 'upload')
     await sut.handle(mockRequest())
     expect(validateSpy).toHaveBeenCalledWith(mockRequest())
   })
-
   test('Should return 404 if uploadFile returns false', async () => {
     const { sut, uploadFileStub } = makeSut()
     jest.spyOn(uploadFileStub, 'upload').mockReturnValueOnce(Promise.resolve(false))
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(notFound())
   })
-
   test('Should return 500 if uploadFile throws', async () => {
     const { sut, uploadFileStub } = makeSut()
     jest.spyOn(uploadFileStub, 'upload').mockImplementationOnce(async () => {
@@ -60,7 +57,6 @@ describe('FileUpload Controller', () => {
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
   })
-
   test('Should return 200 on success', async () => {
     const { sut } = makeSut()
     const request = mockRequest()

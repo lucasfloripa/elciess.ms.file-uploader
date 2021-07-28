@@ -4,6 +4,7 @@ export interface UploadFile {
 
 export namespace UploadFile {
   export type Params = {
+    bucket: string
     originalname: string
     mimetype: string
     path: string
