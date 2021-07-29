@@ -1,4 +1,4 @@
-import { CloudFileUpload } from '@/data/usecases/cloud-file-upload'
+import { CloudFileUpload } from '@/data/usecases'
 import { AwsStorage } from '@/infra/cloud'
 
 export const makeCloudFileUpload = (): CloudFileUpload => {
