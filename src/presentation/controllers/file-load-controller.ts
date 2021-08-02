@@ -6,7 +6,7 @@ export class FileLoadController implements Controller {
   constructor (
     private readonly validation: Validation,
     private readonly loadFile: LoadFile
-  ) {}
+  ) { }
 
   async handle (request: FileLoadController.Request): Promise<HttpResponse> {
     try {
@@ -18,7 +18,7 @@ export class FileLoadController implements Controller {
       if (!file) {
         return notFound()
       }
-      return ok(file)
+      return ok({ file, fileName: request.fileName })
     } catch (error) {
       return serverError(error)
     }

@@ -5,7 +5,7 @@ import { mockValidationStub } from '@/tests/presentation/mocks'
 import { badRequest, notFound, ok, serverError } from '@/presentation/helpers'
 
 const mockRequest = (): FileLoadController.Request => ({
-  fileName: 'any_name',
+  fileName: 'any_file_name',
   bucket: 'any_bucket'
 })
 
@@ -73,6 +73,6 @@ describe('FileLoad Controller', () => {
     const { sut } = makeSut()
     const request = mockRequest()
     const httpResponse = await sut.handle(request)
-    expect(httpResponse).toEqual(ok('any_file'))
+    expect(httpResponse).toEqual(ok({ file: 'any_file', fileName: 'any_file_name' }))
   })
 })
