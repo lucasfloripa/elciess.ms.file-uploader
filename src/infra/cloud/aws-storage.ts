@@ -24,12 +24,10 @@ export class AwsStorage implements UploadFileStorage, LoadFileStorage {
   async loadFile (loadFileParams: LoadFileStorage.Params): Promise<any> {
     const { bucket, fileName } = loadFileParams
     const awsS3 = AwsHelper.getClientS3()
-    const file = awsS3.getObject({
+    const readStream = awsS3.getObject({
       Bucket: bucket,
       Key: fileName
-    }, (_err, data) => {
-      return data
-    })
-    return file
+    }).createReadStream()
+    return readStream
   }
 }
