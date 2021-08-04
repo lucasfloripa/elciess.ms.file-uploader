@@ -67,6 +67,12 @@ describe('CloudFileUpload Data Usecase', () => {
     await sut.upload(request)
     expect(generateSpy).toHaveBeenCalled()
   })
+  test('Should throw if idGenerator throws', async () => {
+    const { sut, idGeneratorStub } = makeSut()
+    jest.spyOn(idGeneratorStub, 'generate').mockImplementationOnce(async () => await Promise.reject(new Error()))
+    const promise = sut.upload(mockRequest())
+    await expect(promise).rejects.toThrow()
+  })
   test('Should return true on success', async () => {
     const { sut } = makeSut()
     const request = mockRequest()
