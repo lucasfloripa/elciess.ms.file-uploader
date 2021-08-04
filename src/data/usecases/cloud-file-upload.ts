@@ -11,16 +11,16 @@ export class CloudFileUpload implements UploadFile {
   async upload (uploadFileParams: UploadFile.Params): Promise<boolean> {
     const { bucket, mimetype, originalname } = uploadFileParams
     const uuid = await this.idGenerator.generate()
-    let isValid: boolean = false
-    isValid = await this.uploadFileStorage.uploadFile(uploadFileParams)
+    let isRegister: boolean = false
+    const isValid = await this.uploadFileStorage.uploadFile(uploadFileParams)
     if (isValid) {
-      await this.registerFileRepository.register({
+      isRegister = await this.registerFileRepository.register({
         id: uuid,
         bucket,
         mimetype,
         originalname
       })
     }
-    return isValid
+    return isRegister
   }
 }
