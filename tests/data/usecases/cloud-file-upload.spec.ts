@@ -97,6 +97,12 @@ describe('CloudFileUpload Data Usecase', () => {
     const isRegister = await sut.upload(mockRequest())
     expect(isRegister).toBeFalsy()
   })
+  test('Should throw if registerFileRepository throws', async () => {
+    const { sut, registerFileRepositoryStub } = makeSut()
+    jest.spyOn(registerFileRepositoryStub, 'register').mockImplementationOnce(async () => await Promise.reject(new Error()))
+    const promise = sut.upload(mockRequest())
+    await expect(promise).rejects.toThrow()
+  })
   test('Should return true on success', async () => {
     const { sut } = makeSut()
     const request = mockRequest()
