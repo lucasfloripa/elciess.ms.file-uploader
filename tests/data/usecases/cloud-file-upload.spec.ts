@@ -1,5 +1,5 @@
 import { CloudFileUpload } from '@/data/usecases'
-import { UploadFileStorage } from '@/data/protocols'
+import { UploadFileStorage, IdGenerator } from '@/data/protocols'
 import { UploadFile } from '@/domain/usecases'
 
 const mockRequest = (): UploadFile.Params => ({
@@ -18,15 +18,26 @@ const mockUploadFileStorageStub = (): UploadFileStorage => {
   return new UploadFileStorageStub()
 }
 
+const mockIdGeneratorStub = (): IdGenerator => {
+  class IdGeneratorStub implements IdGenerator {
+    async generate (): Promise<string> {
+      return 'any_generated_id'
+    }
+  }
+  return new IdGeneratorStub()
+}
+
 type SutTypes = {
   sut: CloudFileUpload
   uploadFileStorageStub: UploadFileStorage
+  idGeneratorStub: IdGenerator
 }
 
 const makeSut = (): SutTypes => {
   const uploadFileStorageStub = mockUploadFileStorageStub()
-  const sut = new CloudFileUpload(uploadFileStorageStub)
-  return { sut, uploadFileStorageStub }
+  const idGeneratorStub = mockIdGeneratorStub()
+  const sut = new CloudFileUpload(uploadFileStorageStub, idGeneratorStub)
+  return { sut, uploadFileStorageStub, idGeneratorStub }
 }
 
 describe('CloudFileUpload Data Usecase', () => {
@@ -48,6 +59,13 @@ describe('CloudFileUpload Data Usecase', () => {
     jest.spyOn(uploadFileStorageStub, 'uploadFile').mockImplementationOnce(async () => await Promise.reject(new Error()))
     const promise = sut.upload(mockRequest())
     await expect(promise).rejects.toThrow()
+  })
+  test('Should call idGenerator with correctly', async () => {
+    const { sut, idGeneratorStub } = makeSut()
+    const generateSpy = jest.spyOn(idGeneratorStub, 'generate')
+    const request = mockRequest()
+    await sut.upload(request)
+    expect(generateSpy).toHaveBeenCalled()
   })
   test('Should return true on success', async () => {
     const { sut } = makeSut()
