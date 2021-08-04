@@ -1,5 +1,5 @@
 import { CloudFileUpload } from '@/data/usecases'
-import { UploadFileStorage, IdGenerator } from '@/data/protocols'
+import { UploadFileStorage, IdGenerator, RegisterFileRepository } from '@/data/protocols'
 import { UploadFile } from '@/domain/usecases'
 
 const mockRequest = (): UploadFile.Params => ({
@@ -27,17 +27,28 @@ const mockIdGeneratorStub = (): IdGenerator => {
   return new IdGeneratorStub()
 }
 
+const mockRegisterFileRepositoryStub = (): RegisterFileRepository => {
+  class RegisterFileRepositoryStub implements RegisterFileRepository {
+    async register (params: RegisterFileRepository.Params): Promise<boolean> {
+      return true
+    }
+  }
+  return new RegisterFileRepositoryStub()
+}
+
 type SutTypes = {
   sut: CloudFileUpload
   uploadFileStorageStub: UploadFileStorage
   idGeneratorStub: IdGenerator
+  registerFileRepositoryStub: RegisterFileRepository
 }
 
 const makeSut = (): SutTypes => {
   const uploadFileStorageStub = mockUploadFileStorageStub()
   const idGeneratorStub = mockIdGeneratorStub()
-  const sut = new CloudFileUpload(uploadFileStorageStub, idGeneratorStub)
-  return { sut, uploadFileStorageStub, idGeneratorStub }
+  const registerFileRepositoryStub = mockRegisterFileRepositoryStub()
+  const sut = new CloudFileUpload(uploadFileStorageStub, idGeneratorStub, registerFileRepositoryStub)
+  return { sut, uploadFileStorageStub, idGeneratorStub, registerFileRepositoryStub }
 }
 
 describe('CloudFileUpload Data Usecase', () => {
@@ -48,7 +59,7 @@ describe('CloudFileUpload Data Usecase', () => {
     await sut.upload(request)
     expect(uploadFileSpy).toHaveBeenCalledWith(request)
   })
-  test('Should return null if uploadFileStorage returns null', async () => {
+  test('Should return false if uploadFileStorage returns false', async () => {
     const { sut, uploadFileStorageStub } = makeSut()
     jest.spyOn(uploadFileStorageStub, 'uploadFile').mockReturnValueOnce(Promise.resolve(null))
     const isValid = await sut.upload(mockRequest())
@@ -72,6 +83,13 @@ describe('CloudFileUpload Data Usecase', () => {
     jest.spyOn(idGeneratorStub, 'generate').mockImplementationOnce(async () => await Promise.reject(new Error()))
     const promise = sut.upload(mockRequest())
     await expect(promise).rejects.toThrow()
+  })
+  test('Should call registerFileRepository with correct values', async () => {
+    const { sut, registerFileRepositoryStub } = makeSut()
+    const registerSpy = jest.spyOn(registerFileRepositoryStub, 'register')
+    const request = mockRequest()
+    await sut.upload(request)
+    expect(registerSpy).toHaveBeenCalledWith({ id: 'any_generated_id', bucket: 'any_bucket', originalname: 'originalname', mimetype: 'mimetype' })
   })
   test('Should return true on success', async () => {
     const { sut } = makeSut()
