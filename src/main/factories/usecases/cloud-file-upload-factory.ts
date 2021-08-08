@@ -1,7 +1,9 @@
 import { CloudFileUpload } from '@/data/usecases'
-import { AwsStorage } from '@/infra/cloud'
+import { S3FileStorage } from '@/infra/cloud/s3'
+import { UuidAdapter } from '@/infra/generators'
 
 export const makeCloudFileUpload = (): CloudFileUpload => {
-  const awsStorage = new AwsStorage()
-  return new CloudFileUpload(awsStorage)
+  const s3FileStorage = new S3FileStorage()
+  const uuidAdapter = new UuidAdapter()
+  return new CloudFileUpload(s3FileStorage, uuidAdapter)
 }

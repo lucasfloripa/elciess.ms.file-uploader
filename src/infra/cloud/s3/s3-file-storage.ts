@@ -1,9 +1,9 @@
 import { UploadFileStorage, LoadFileStorage } from '@/data/protocols'
-import { AwsHelper } from '@/infra/cloud'
+import { AwsHelper } from '@/infra/helpers'
 
 import fs from 'fs'
 
-export class AwsStorage implements UploadFileStorage, LoadFileStorage {
+export class S3FileStorage implements UploadFileStorage, LoadFileStorage {
   async uploadFile (uploadFileParams: UploadFileStorage.Params): Promise<boolean> {
     const { bucket, originalname, path, mimetype } = uploadFileParams
     const awsS3 = AwsHelper.getClientS3()
