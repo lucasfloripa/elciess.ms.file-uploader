@@ -1,5 +1,5 @@
 export interface LoadFileRepository {
-  loadFile: (params: LoadFileRepository.Params) => Promise<boolean>
+  loadRegister: (params: LoadFileRepository.Params) => Promise<string>
 }
 
 export namespace LoadFileRepository {
