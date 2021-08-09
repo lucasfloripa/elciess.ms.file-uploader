@@ -8,7 +8,7 @@ describe('FileLoadController Validation', () => {
   test('Should call Validation Composite with all Validators', () => {
     makeFileLoadValidation()
     const validations: Validation[] = []
-    for (const field of ['bucket', 'fileName']) {
+    for (const field of ['bucket', 'id']) {
       validations.push(new RequiredFieldValidation(field))
     }
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
