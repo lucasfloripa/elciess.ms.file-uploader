@@ -91,12 +91,6 @@ describe('CloudFileUpload Data Usecase', () => {
     await sut.upload(request)
     expect(registerSpy).toHaveBeenCalledWith({ id: 'any_generated_id', bucket: 'any_bucket', originalname: 'originalname', mimetype: 'mimetype' })
   })
-  test('Should return false if registerFileRepository returns false', async () => {
-    const { sut, registerFileRepositoryStub } = makeSut()
-    jest.spyOn(registerFileRepositoryStub, 'register').mockReturnValueOnce(Promise.resolve(false))
-    const isRegister = await sut.upload(mockRequest())
-    expect(isRegister).toBeFalsy()
-  })
   test('Should throw if registerFileRepository throws', async () => {
     const { sut, registerFileRepositoryStub } = makeSut()
     jest.spyOn(registerFileRepositoryStub, 'register').mockImplementationOnce(async () => await Promise.reject(new Error()))
