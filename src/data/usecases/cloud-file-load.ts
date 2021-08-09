@@ -5,16 +5,16 @@ export class CloudFileLoad implements LoadFile {
   constructor (
     private readonly loadFileStorage: LoadFileStorage,
     private readonly loadFileRepository: LoadFileRepository
-  ) {}
+  ) { }
 
   async load (params: LoadFile.Params): Promise<any> {
     const originalName = await this.loadFileRepository.loadRegister(params)
-    const file = await this.loadFileStorage.loadFile({
-      bucket: params.bucket,
-      originalName
-    })
-    if (!file) {
-      return null
+    let file: any = null
+    if (originalName) {
+      file = await this.loadFileStorage.loadFile({
+        bucket: params.bucket,
+        originalName
+      })
     }
     return file
   }
