@@ -1,5 +1,4 @@
 import multer from 'multer'
-import crypto from 'crypto'
 
 const tmpFilePath = `${__dirname}/../../tmp`
 
@@ -8,13 +7,6 @@ const multerConfig = {
   storage: multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, tmpFilePath)
-    },
-    filename: (req, file, cb) => {
-      crypto.randomBytes(8, (err, hash) => {
-        if (err) cb(err, file.originalname)
-        file.originalname = `${hash.toString('hex')}-${file.originalname}`
-        cb(null, file.originalname)
-      })
     }
   })
 }
