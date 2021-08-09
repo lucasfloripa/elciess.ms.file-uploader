@@ -13,7 +13,9 @@ export const AwsHelper = {
 
   getClientDynamo (): aws.DynamoDB.DocumentClient {
     if (!this.clientDynamo) {
-      this.clientDynamo = new aws.DynamoDB.DocumentClient()
+      this.clientDynamo = new aws.DynamoDB.DocumentClient({
+        region: 'us-east-1'
+      })
     }
     return this.clientDynamo
   }
