@@ -1,5 +1,5 @@
 export interface RegisterFileRepository {
-  register: (params: RegisterFileRepository.Params) => Promise<boolean>
+  register: (params: RegisterFileRepository.Params) => Promise<void>
 }
 
 export namespace RegisterFileRepository {
