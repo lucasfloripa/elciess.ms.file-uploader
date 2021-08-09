@@ -18,7 +18,7 @@ export class FileLoadController implements Controller {
       if (!file) {
         return notFound()
       }
-      return ok({ file, fileName: request.fileName })
+      return ok(file)
     } catch (error) {
       return serverError(error)
     }
@@ -27,7 +27,7 @@ export class FileLoadController implements Controller {
 
 export namespace FileLoadController {
   export type Request = {
-    fileName: string
+    id: string
     bucket: string
   }
 }

@@ -4,7 +4,7 @@ export interface LoadFile {
 
 export namespace LoadFile {
   export type Params = {
-    fileName: string
+    id: string
     bucket: string
   }
   export type Result = any
