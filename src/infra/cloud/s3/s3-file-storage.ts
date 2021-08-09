@@ -22,11 +22,11 @@ export class S3FileStorage implements UploadFileStorage, LoadFileStorage {
   }
 
   async loadFile (loadFileParams: LoadFileStorage.Params): Promise<any> {
-    const { bucket, fileName } = loadFileParams
+    const { bucket, originalName } = loadFileParams
     const awsS3 = AwsHelper.getClientS3()
     const readStream = awsS3.getObject({
       Bucket: bucket,
-      Key: fileName
+      Key: originalName
     }).createReadStream()
     return readStream
   }
