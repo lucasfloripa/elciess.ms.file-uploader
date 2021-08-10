@@ -25,7 +25,7 @@ export class FileDynamoRepository implements RegisterFileRepository, LoadFileRep
       },
       ProjectionExpression: 'originalname'
     })
-    const response = await exists.promise().then(data => data.Item.originalname)
+    const response = await exists.promise().then((data) => data.Item?.originalname)
     return response
   }
 }

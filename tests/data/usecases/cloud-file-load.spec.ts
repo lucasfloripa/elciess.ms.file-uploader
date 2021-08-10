@@ -19,7 +19,7 @@ const mockLoadFileStorageStub = (): LoadFileStorage => {
 const mockLoadFileRepositoryStub = (): LoadFileRepository => {
   class LoadFileRepositoryStub implements LoadFileRepository {
     async loadRegister (params: LoadFileRepository.Params): Promise<string> {
-      return 'any_originalname'
+      return 'any_originalName'
     }
   }
   return new LoadFileRepositoryStub()
@@ -44,14 +44,14 @@ describe('CloudFileLoad', () => {
     const loadFileSpy = jest.spyOn(loadFileStorageStub, 'loadFile')
     const request = makeRequest()
     await sut.load(request)
-    expect(loadFileSpy).toHaveBeenCalledWith({ bucket: 'any_bucket', originalName: 'any_originalname' })
+    expect(loadFileSpy).toHaveBeenCalledWith({ bucket: 'any_bucket', originalName: 'any_originalName' })
   })
   test('Should return null if LoadFileStorage returns null', async () => {
     const { sut, loadFileStorageStub } = makeSut()
     jest.spyOn(loadFileStorageStub, 'loadFile').mockReturnValueOnce(Promise.resolve(null))
     const request = makeRequest()
-    const file = await sut.load(request)
-    expect(file).toBeNull()
+    const response = await sut.load(request)
+    expect(response.file).toBeNull()
   })
   test('Should throw if loadFileStorage throws', async () => {
     const { sut, loadFileStorageStub } = makeSut()
@@ -83,6 +83,6 @@ describe('CloudFileLoad', () => {
     const { sut } = makeSut()
     const request = makeRequest()
     const file = await sut.load(request)
-    expect(file).toBe('any_file')
+    expect(file).toEqual({ file: 'any_file', originalName: 'any_originalName' })
   })
 })

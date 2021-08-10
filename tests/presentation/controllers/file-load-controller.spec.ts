@@ -12,7 +12,7 @@ const mockRequest = (): FileLoadController.Request => ({
 const mockLoadFileStub = (): LoadFile => {
   class LoadFileStub implements LoadFile {
     async load (params: LoadFile.Params): Promise<any> {
-      return 'any_file'
+      return { file: 'any_file', originalName: 'any_originalName' }
     }
   }
   return new LoadFileStub()
@@ -73,6 +73,6 @@ describe('FileLoad Controller', () => {
     const { sut } = makeSut()
     const request = mockRequest()
     const httpResponse = await sut.handle(request)
-    expect(httpResponse).toEqual(ok('any_file'))
+    expect(httpResponse).toEqual(ok({ file: 'any_file', originalName: 'any_originalName' }))
   })
 })

@@ -15,7 +15,9 @@ export class CloudFileLoad implements LoadFile {
         bucket: params.bucket,
         originalName
       })
+    } else {
+      return null
     }
-    return file
+    return { file, originalName }
   }
 }
