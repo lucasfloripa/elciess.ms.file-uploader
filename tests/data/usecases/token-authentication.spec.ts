@@ -27,4 +27,10 @@ describe('TokenAuthentication', () => {
     await sut.auth('any_data')
     expect(decryptSpy).toBeCalledWith('any_data')
   })
+  test('Should return false if decrypter fails', async () => {
+    const { sut, decrypterStub } = makeSut()
+    jest.spyOn(decrypterStub, 'decrypt').mockReturnValueOnce(Promise.resolve(null))
+    const decrypt = await sut.auth('any_token')
+    expect(decrypt).toBeNull()
+  })
 })
