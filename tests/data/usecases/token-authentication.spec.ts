@@ -31,12 +31,17 @@ describe('TokenAuthentication', () => {
     const { sut, decrypterStub } = makeSut()
     jest.spyOn(decrypterStub, 'decrypt').mockReturnValueOnce(Promise.resolve(null))
     const decrypt = await sut.auth('any_token')
-    expect(decrypt).toBeNull()
+    expect(decrypt).toBeFalsy()
   })
   test('Should throw if decrypter throws', async () => {
     const { sut, decrypterStub } = makeSut()
     jest.spyOn(decrypterStub, 'decrypt').mockImplementationOnce(async () => await Promise.reject(new Error()))
     const promise = sut.auth('any_token')
     await expect(promise).rejects.toThrow()
+  })
+  test('Should return true on success', async () => {
+    const { sut } = makeSut()
+    const decrypt = await sut.auth('any_token')
+    expect(decrypt).toBeTruthy()
   })
 })
