@@ -1,18 +1,18 @@
 import { HttpResponse, Middleware } from '@/presentation/protocols'
 import { forbidden, ok, serverError, unauthorized } from '@/presentation/helpers'
 import { AccessDeniedError } from '@/presentation/errors'
-import { TokenAuthentication } from '@/domain/usecases'
+import { Authentication } from '@/domain/usecases'
 
 export class AuthMiddleware implements Middleware {
   constructor (
-    private readonly roleAuthentication: TokenAuthentication
+    private readonly authentication: Authentication
   ) { }
 
-  async handle (request: AuthRoleMiddleware.Request): Promise<HttpResponse> {
+  async handle (request: AuthMiddleware.Request): Promise<HttpResponse> {
     try {
       const { accessToken } = request
       if (accessToken) {
-        const isValid = await this.roleAuthentication.auth(accessToken)
+        const isValid = await this.authentication.auth(accessToken)
         if (isValid) {
           return ok(isValid)
         }
@@ -25,7 +25,7 @@ export class AuthMiddleware implements Middleware {
   }
 }
 
-export namespace AuthRoleMiddleware {
+export namespace AuthMiddleware {
   export type Request = {
     accessToken: string
   }
