@@ -8,8 +8,9 @@ export class TokenAuthentication implements Authentication {
 
   async auth (data: any): Promise<boolean> {
     const decrypt = await this.decrypter.decrypt(data)
-    if (!decrypt) {
-      return null
+    if (decrypt) {
+      return true
     }
+    return false
   }
 }
