@@ -17,6 +17,8 @@ export class S3FileStorage implements UploadFileStorage, LoadFileStorage {
     }).promise()
       .then(data => data.ETag)
 
+    fs.unlinkSync(path)
+
     // eslint-disable-next-line no-unneeded-ternary
     return isValid ? true : false
   }
