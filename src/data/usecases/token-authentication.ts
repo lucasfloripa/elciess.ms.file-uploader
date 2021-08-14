@@ -6,9 +6,9 @@ export class TokenAuthentication implements Authentication {
     private readonly decrypter: Decrypter
   ) {}
 
-  async auth (data: any): Promise<boolean> {
-    const decrypt = await this.decrypter.decrypt(data)
-    if (decrypt) {
+  async auth (accessToken: string): Promise<boolean> {
+    const decryptToken = await this.decrypter.decrypt(accessToken)
+    if (decryptToken) {
       return true
     }
     return false
