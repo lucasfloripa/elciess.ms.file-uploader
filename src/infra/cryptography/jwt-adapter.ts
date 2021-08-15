@@ -5,14 +5,13 @@ import jwt from 'jsonwebtoken'
 
 export class JwtAdapter implements Decrypter {
   async decrypt (accessToken: string): Promise<boolean> {
-    let result: boolean
-    jwt.verify(accessToken, env.jwtSecret, (err) => {
+    const isValid = jwt.verify(accessToken, env.jwtSecret, (err) => {
       if (err) {
-        result = false
+        return false
       } else {
-        result = true
+        return true
       }
-    })
-    return result
+    }) as unknown as boolean
+    return isValid
   }
 }

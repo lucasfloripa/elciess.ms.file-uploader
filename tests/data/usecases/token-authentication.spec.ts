@@ -3,8 +3,8 @@ import { Decrypter } from '@/data/protocols'
 
 const mockDescrypterStub = (): Decrypter => {
   class DecrypterStub implements Decrypter {
-    async decrypt (text: string): Promise<string> {
-      return Promise.resolve('any_data')
+    async decrypt (acessToken: string): Promise<boolean> {
+      return Promise.resolve(true)
     }
   }
   return new DecrypterStub()
@@ -24,12 +24,12 @@ describe('TokenAuthentication', () => {
   test('Should call decrypter with correct value', async () => {
     const { sut, decrypterStub } = makeSut()
     const decryptSpy = jest.spyOn(decrypterStub, 'decrypt')
-    await sut.auth('any_data')
-    expect(decryptSpy).toBeCalledWith('any_data')
+    await sut.auth('access_token')
+    expect(decryptSpy).toBeCalledWith('access_token')
   })
   test('Should return false if decrypter fails', async () => {
     const { sut, decrypterStub } = makeSut()
-    jest.spyOn(decrypterStub, 'decrypt').mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(decrypterStub, 'decrypt').mockReturnValueOnce(Promise.resolve(false))
     const decrypt = await sut.auth('any_token')
     expect(decrypt).toBeFalsy()
   })

@@ -4,8 +4,8 @@ import env from '@/main/config/env'
 import jwt from 'jsonwebtoken'
 
 jest.mock('jsonwebtoken', () => ({
-  async verify (): Promise<string> {
-    return 'value'
+  async verify (): Promise<boolean> {
+    return true
   }
 }))
 
@@ -18,8 +18,8 @@ describe('Jwt Adapter', () => {
     test('Should call decrypt with correct values', async () => {
       const sut = makeSut()
       const decryptSpy = jest.spyOn(jwt, 'verify')
-      await sut.decrypt('data')
-      expect(decryptSpy).toHaveBeenCalledWith('data', env.jwtSecret)
+      await sut.decrypt('accessToken')
+      expect(decryptSpy).toHaveBeenCalledWith('accessToken', env.jwtSecret, expect.any(Function))
     })
 
     test('Should throw if verify throws', async () => {
@@ -27,14 +27,14 @@ describe('Jwt Adapter', () => {
       jest.spyOn(jwt, 'verify').mockImplementationOnce(async () => {
         throw new Error()
       })
-      const promise = sut.decrypt('data')
+      const promise = sut.decrypt('accessToken')
       await expect(promise).rejects.toThrow()
     })
 
     test('Should return a value on verify success', async () => {
       const sut = makeSut()
-      const value = await sut.decrypt('data')
-      expect(value).toBe('value')
+      const value = await sut.decrypt('accessToken')
+      expect(value).toBe(true)
     })
   })
 })
