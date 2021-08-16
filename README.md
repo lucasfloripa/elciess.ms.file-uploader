@@ -10,4 +10,5 @@ Its an API to upload and load any type of files on cloud.
 AWS, TDD, Clean Architeture, Clean Code, SOLID Principles, Design Patterns and so on.
 
 ### Functional requirements
-Soon...
+1. [File Upload](./requirements/file-upload.md)
+2. [File Load](./requirements/file-load.md)
