@@ -4,3 +4,4 @@ coverage
 .vscode
 .env
 src/tmp/**
+!src/tmp/keep_folder.ts
