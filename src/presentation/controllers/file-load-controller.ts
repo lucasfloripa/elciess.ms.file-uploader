@@ -1,6 +1,6 @@
 import { LoadFile } from '@/domain/usecases'
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, ok, serverError } from '@/presentation/helpers'
+import { badRequest, notFound, ok, serverError } from '@/presentation/helpers'
 
 export class FileLoadController implements Controller {
   constructor (
@@ -14,11 +14,11 @@ export class FileLoadController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      // const file = await this.loadFile.load(request)
-      // if (!file) {
-      //   return notFound()
-      // }
-      return ok('file')
+      const file = await this.loadFile.load(request)
+      if (!file) {
+        return notFound()
+      }
+      return ok(file)
     } catch (error) {
       return serverError(error)
     }
