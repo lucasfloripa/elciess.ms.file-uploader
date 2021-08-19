@@ -21,7 +21,6 @@ describe('Jwt Adapter', () => {
       await sut.decrypt('accessToken')
       expect(decryptSpy).toHaveBeenCalledWith('accessToken', env.jwtSecret, expect.any(Function))
     })
-
     test('Should throw if verify throws', async () => {
       const sut = makeSut()
       jest.spyOn(jwt, 'verify').mockImplementationOnce(async () => {
@@ -30,11 +29,10 @@ describe('Jwt Adapter', () => {
       const promise = sut.decrypt('accessToken')
       await expect(promise).rejects.toThrow()
     })
-
-    test('Should return a value on verify success', async () => {
+    test('Should return true on verify success', async () => {
       const sut = makeSut()
-      const value = await sut.decrypt('accessToken')
-      expect(value).toBe(true)
+      const isValid = await sut.decrypt('accessToken')
+      expect(isValid).toBeTruthy()
     })
   })
 })
