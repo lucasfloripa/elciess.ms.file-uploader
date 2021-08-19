@@ -1,5 +1,5 @@
 # Elciess File-Uploader API
-##### Tecnologies: Typescript, Node, AWS, Express, Jest, DynamoDB, S3
+##### Tecnologies: Typescript, Node, AWS, Express, Jest, DynamoDB, S3, Docker, [Heroku](https://elciess-ms-fileupload.herokuapp.com/api/ "https://elciess-ms-fileupload.herokuapp.com/api/")
 
 <br />
 
