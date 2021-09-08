@@ -18,14 +18,13 @@ export class FileDynamoRepository implements RegisterFileRepository, LoadFileRep
   async loadRegister (params: LoadFileRepository.Params): Promise<string> {
     const { bucket, id } = params
     const dynamoDb = AwsHelper.getClientDynamo()
-    const exists = dynamoDb.get({
+    const exists = await dynamoDb.get({
       TableName: bucket,
       Key: {
         id
       },
       ProjectionExpression: 'originalname'
-    })
-    const response = await exists.promise().then((data) => data.Item?.originalname)
-    return response
+    }).promise().then((data) => data.Item?.originalname)
+    return exists
   }
 }
