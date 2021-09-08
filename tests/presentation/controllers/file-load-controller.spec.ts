@@ -1,22 +1,13 @@
 import { LoadFile } from '@/domain/usecases'
 import { FileLoadController } from '@/presentation/controllers/file-load-controller'
 import { Validation } from '@/presentation/protocols'
-import { mockValidationStub } from '@/tests/presentation/mocks'
+import { mockLoadFileStub, mockValidationStub } from '@/tests/presentation/mocks'
 import { badRequest, notFound, ok, serverError } from '@/presentation/helpers'
 
 const mockRequest = (): FileLoadController.Request => ({
   id: 'any_id',
   bucket: 'any_bucket'
 })
-
-const mockLoadFileStub = (): LoadFile => {
-  class LoadFileStub implements LoadFile {
-    async load (params: LoadFile.Params): Promise<any> {
-      return { file: 'any_file', originalName: 'any_originalName' }
-    }
-  }
-  return new LoadFileStub()
-}
 
 type SutTypes = {
   sut: FileLoadController

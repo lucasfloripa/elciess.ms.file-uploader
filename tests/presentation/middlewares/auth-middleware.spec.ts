@@ -2,15 +2,7 @@ import { AuthMiddleware } from '@/presentation/middlewares'
 import { forbidden, ok, serverError, unauthorized } from '@/presentation/helpers'
 import { AccessDeniedError } from '@/presentation/errors'
 import { Authentication } from '@/domain/usecases'
-
-const mockAuthenticationStub = (): Authentication => {
-  class AuthenticationStub implements Authentication {
-    async auth (data: any): Promise<boolean> {
-      return Promise.resolve(true)
-    }
-  }
-  return new AuthenticationStub()
-}
+import { mockAuthenticationStub } from '@/tests/presentation/mocks'
 
 type SutTypes = {
   sut: AuthMiddleware

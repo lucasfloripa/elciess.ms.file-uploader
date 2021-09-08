@@ -1,29 +1,12 @@
 import { CloudFileLoad } from '@/data/usecases'
 import { LoadFileRepository, LoadFileStorage } from '@/data/protocols'
 import { LoadFile } from '@/domain/usecases'
+import { mockLoadFileStorageStub, mockLoadFileRepositoryStub } from '@/tests/data/mocks'
 
 const makeRequest = (): LoadFile.Params => ({
   id: 'any_id',
   bucket: 'any_bucket'
 })
-
-const mockLoadFileStorageStub = (): LoadFileStorage => {
-  class LoadFileStorageStub implements LoadFileStorage {
-    async loadFile (loadFileParams: LoadFileStorage.Params): Promise<any> {
-      return Promise.resolve('any_file')
-    }
-  }
-  return new LoadFileStorageStub()
-}
-
-const mockLoadFileRepositoryStub = (): LoadFileRepository => {
-  class LoadFileRepositoryStub implements LoadFileRepository {
-    async loadRegister (params: LoadFileRepository.Params): Promise<string> {
-      return 'any_originalName'
-    }
-  }
-  return new LoadFileRepositoryStub()
-}
 
 type SutTypes = {
   sut: CloudFileLoad

@@ -1,14 +1,6 @@
 import { TokenAuthentication } from '@/data/usecases'
 import { Decrypter } from '@/data/protocols'
-
-const mockDescrypterStub = (): Decrypter => {
-  class DecrypterStub implements Decrypter {
-    async decrypt (acessToken: string): Promise<boolean> {
-      return Promise.resolve(true)
-    }
-  }
-  return new DecrypterStub()
-}
+import { mockDecrypterStub } from '@/tests/data/mocks'
 
 export type SutTypes = {
   sut: TokenAuthentication
@@ -16,7 +8,7 @@ export type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-  const decrypterStub = mockDescrypterStub()
+  const decrypterStub = mockDecrypterStub()
   const sut = new TokenAuthentication(decrypterStub)
   return { sut, decrypterStub }
 }

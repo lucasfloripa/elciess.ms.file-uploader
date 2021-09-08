@@ -1,6 +1,7 @@
 import { CloudFileUpload } from '@/data/usecases'
 import { UploadFileStorage, IdGenerator, RegisterFileRepository } from '@/data/protocols'
 import { UploadFile } from '@/domain/usecases'
+import { mockUploadFileStorageStub, mockIdGeneratorStub, mockRegisterFileRepositoryStub } from '@/tests/data/mocks'
 
 const mockRequest = (): UploadFile.Params => ({
   bucket: 'any_bucket',
@@ -8,33 +9,6 @@ const mockRequest = (): UploadFile.Params => ({
   mimetype: 'mimetype',
   path: 'path'
 })
-
-const mockUploadFileStorageStub = (): UploadFileStorage => {
-  class UploadFileStorageStub implements UploadFileStorage {
-    async uploadFile (uploadFileParams: UploadFile.Params): Promise<boolean> {
-      return Promise.resolve(true)
-    }
-  }
-  return new UploadFileStorageStub()
-}
-
-const mockIdGeneratorStub = (): IdGenerator => {
-  class IdGeneratorStub implements IdGenerator {
-    async generate (): Promise<string> {
-      return 'any_generated_id'
-    }
-  }
-  return new IdGeneratorStub()
-}
-
-const mockRegisterFileRepositoryStub = (): RegisterFileRepository => {
-  class RegisterFileRepositoryStub implements RegisterFileRepository {
-    async register (params: RegisterFileRepository.Params): Promise<void> {
-      return null
-    }
-  }
-  return new RegisterFileRepositoryStub()
-}
 
 type SutTypes = {
   sut: CloudFileUpload
